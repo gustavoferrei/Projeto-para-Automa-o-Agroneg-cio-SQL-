@@ -1,0 +1,24 @@
+use bd_agro2;
+select s.cd_ordenha,e.cd_vaca from tb_servicos_animais s
+inner join tb_estq_leite e on s.id=e.id;
+
+select c.dt_colher,h.cd_produto from tb_servicos_colheita_hort c 
+inner join tb_estq_hort h on c.id=h.id;
+
+select c.dt_colher,f.cd_maca from tb_servicos_colheita_fruti c 
+inner join tb_estq_frut f on c.id=f.id;
+
+select a.cd_colheita_ovos,e.cd_ovos from tb_servicos_aviario a
+inner join tb_estq_aviario e on a.id=e.id;
+
+select p.cd_peixes,e.cd_peixe from tb_servicos_lago p 
+inner join tb_estq_carne_branca e on p.id=e.id;
+
+select c.cd_vaca,a.cd_abatedouro from tb_celeiro c 
+inner join tb_servicos_animais a on c.id=a.id;
+
+select c.cd_ovelha,a.cd_tosquear from tb_cercado c 
+inner join tb_servicos_animais a on c.id=a.id;
+
+select s.cd_abatedouro,c.cd_boi from tb_servicos_animais s 
+inner join tb_estq_carne_verm c on s.id=c.id;

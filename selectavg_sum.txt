@@ -1,0 +1,18 @@
+use bd_agro2;
+
+---------------- SELECT AVG-------------------------
+
+
+SELECT AVG (cd_peixes) as media FROM tb_servicos_lago;
+SELECT AVG (cd_arvores_pomar) as media FROM tb_fruticultura;
+SELECT AVG (cd_horta) as media FROM tb_hortalicas;
+SELECT AVG (cd_coelho) as media FROM tb_celeiro;
+
+
+
+---------------- SELECT SUM-------------------------
+
+select SUM(cd_racao) as soma FROM tb_servicos_lago;
+select SUM(cd_cabra) as soma FROM tb_cercado;
+select SUM(cd_boi) as soma FROM tb_celeiro;
+select SUM(cd_aviario) as soma FROM tb_avicultura;

@@ -1,0 +1,34 @@
+use bd_agro2;
+
+create view ordena as
+select s.cd_ordenha,e.cd_vaca from tb_servicos_animais s
+inner join tb_estq_leite e on s.id=e.id;
+
+create view colher_hort as
+select c.dt_colher,h.cd_produto from tb_servicos_colheita_hort c 
+inner join tb_estq_hort h on c.id=h.id;
+
+create view colher_frut as
+select c.dt_colher,f.cd_maca from tb_servicos_colheita_fruti c 
+inner join tb_estq_frut f on c.id=f.id;
+
+create view coleta_ovos as
+select a.cd_colheita_ovos,e.cd_ovos from tb_servicos_aviario a
+inner join tb_estq_aviario e on a.id=e.id;
+
+
+create view carne_peixe as
+select p.cd_peixes,e.cd_peixe from tb_servicos_lago p 
+inner join tb_estq_carne_branca e on p.id=e.id;
+
+create view carne_vaca as
+select c.cd_vaca,a.cd_abatedouro from tb_celeiro c 
+inner join tb_servicos_animais a on c.id=a.id;
+
+create view la_ovelha as
+select c.cd_ovelha,a.cd_tosquear from tb_cercado c 
+inner join tb_servicos_animais a on c.id=a.id;
+
+create view carne_boi as
+select s.cd_abatedouro,c.cd_boi from tb_servicos_animais s 
+inner join tb_estq_carne_verm c on s.id=c.id;

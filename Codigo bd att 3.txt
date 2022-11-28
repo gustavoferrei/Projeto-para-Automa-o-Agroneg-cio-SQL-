@@ -1,0 +1,255 @@
+use bd_agro2;
+
+CREATE TABLE tb_cercado (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_ovelha INT NOT NULL,
+  cd_cabra INT NOT NULL,
+  cd_cavalo INT NOT NULL,
+  cd_burro INT NOT NULL,
+  dt_verificacao_cercado DATE NOT NULL,
+  PRIMARY KEY (ID));
+
+CREATE TABLE tb_celeiro (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_coelho INT NOT NULL,
+  cd_vaca INT NOT NULL,
+  cd_porco INT NOT NULL,
+  cd_boi INT NOT NULL,
+  dt_verificacao_celeiro DATE NOT NULL,
+  PRIMARY KEY (ID));
+
+CREATE TABLE tb_servicos_animais(
+  ID INT NOT NULL AUTO_INCREMENT,
+  dt_ordenha DATE NOT NULL,
+  cd_ordenha INT NOT NULL,
+  dt_tosquear DATE NOT NULL,
+  cd_tosquear INT NOT NULL,
+  dt_abatedouro DATE NOT NULL,
+  cd_abatedouro INT NOT NULL,
+  tb_celeiro_ID INT NOT NULL,
+  tb_cercado_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+FOREIGN KEY (tb_celeiro_ID)
+    REFERENCES tb_celeiro (ID),
+FOREIGN KEY (tb_cercado_ID)
+    REFERENCES tb_cercado (ID));
+
+CREATE TABLE tb_fruticultura (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_arvores_pomar INT NOT NULL,
+  dt_manutencao_pomar DATE NOT NULL,
+  PRIMARY KEY (ID));
+
+CREATE TABLE tb_servicos_colheita_fruti (
+  ID INT NOT NULL AUTO_INCREMENT,
+  dt_colher DATE NOT NULL,
+  cd_produto INT NOT NULL,
+  tb_fruticultura_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+FOREIGN KEY (tb_fruticultura_ID)
+    REFERENCES tb_fruticultura (ID));
+
+CREATE TABLE tb_servicos_plantacao_fruti (
+  ID INT NOT NULL AUTO_INCREMENT,
+  dt_lipeza_solo DATE NOT NULL,
+  dt_plantio DATE NOT NULL,
+  dt_hirrigacao DATE NOT NULL,
+  tb_fruticultura_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+FOREIGN KEY (tb_fruticultura_ID)
+    REFERENCES tb_fruticultura (ID));
+
+CREATE TABLE tb_hortalicas(
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_horta INT NOT NULL,
+  dt_manutencao_horta DATE NOT NULL,
+  PRIMARY KEY (ID));
+
+CREATE TABLE tb_servicos_colheita_hort (
+  ID INT NOT NULL AUTO_INCREMENT,
+  dt_colher DATE NOT NULL,
+  cd_produto INT NOT NULL,
+  tb_hortalicas_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+FOREIGN KEY (tb_hortalicas_ID)
+    REFERENCES tb_hortalicas (ID));
+
+CREATE TABLE tb_piscicultura (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_lago INT NOT NULL,
+  dt_manutencao_lago DATE NOT NULL,
+  PRIMARY KEY (ID));
+
+CREATE TABLE tb_servicos_lago (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_maquinaOxi INT NOT NULL,
+  dt_maquinaOxi DATE NOT NULL,
+  cd_racao INT NOT NULL,
+  cd_peixes INT NOT NULL,
+  tb_piscicultura_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+FOREIGN KEY (tb_piscicultura_ID)
+    REFERENCES tb_piscicultura (ID));
+
+CREATE TABLE tb_avicultura (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_aviario INT NOT NULL,
+  dt_manutencao_aviario DATE NOT NULL,
+  PRIMARY KEY (`ID`));
+
+CREATE TABLE tb_servicos_aviario (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_contagen_aves INT NOT NULL,
+  cd_colheita_ovos INT NOT NULL,
+  cd_avesPoedera INT NOT NULL,
+  dt_limpeza DATE NOT NULL,
+  cd_racao INT NOT NULL,
+  tb_avicultura_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+FOREIGN KEY (tb_avicultura_ID)
+    REFERENCES tb_avicultura (ID));
+
+CREATE TABLE tb_estq_carne_verm (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_vaca INT NOT NULL,
+  cd_boi INT NOT NULL,
+  cd_bacon INT NOT NULL,
+  dt_verificacao_estq DATE NOT NULL,
+  tb_servicos_animais_ID INT NOT NULL,
+  PRIMARY KEY (`ID`),
+FOREIGN KEY (tb_servicos_animais_ID)
+    REFERENCES tb_servicos_animais (ID));
+
+CREATE TABLE tb_estq_carne_branca (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_peixe INT NOT NULL,
+  cd_coelho INT NOT NULL,
+  cd_porco INT NOT NULL,
+  cd_frango INT NOT NULL,
+  dt_verificacao_estq DATE NOT NULL,
+  tb_servicos_animais_ID INT NOT NULL,
+  tb_servicos_aviario_ID INT NOT NULL,
+  tb_servicos_lago_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+FOREIGN KEY (tb_servicos_animais_ID)
+    REFERENCES tb_servicos_animais (ID),
+FOREIGN KEY (tb_servicos_aviario_ID)
+    REFERENCES tb_servicos_aviario (ID),
+FOREIGN KEY (tb_servicos_lago_ID)
+    REFERENCES tb_servicos_lago (ID)
+
+CREATE TABLE tb_estq_leite (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_vaca INT NOT NULL,
+  cd_cabra INT NOT NULL,
+  cd_ovelha INT NOT NULL,
+  cd_queijo INT NOT NULL,
+  dt_verificacao_estq DATE NOT NULL,
+  tb_servicos_animais_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+    FOREIGN KEY (tb_servicos_animais_ID)
+    REFERENCES tb_servicos_animais (ID));
+
+CREATE TABLE tb_estq_couro (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_porco INT NOT NULL,
+  cd_vaca INT NOT NULL,
+  cd_cavalo INT NOT NULL,
+  dt_verificacao_estq DATE NOT NULL,
+  tb_servicos_animais_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+    FOREIGN KEY (tb_servicos_animais_ID)
+    REFERENCES tb_servicos_animais (ID));
+
+CREATE TABLE tb_estq_aviario (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_racao INT NOT NULL,
+  cd_ovos INT NOT NULL,
+  dt_verificacao_estq DATE NOT NULL,
+  tb_servicos_aviario_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+    FOREIGN KEY (tb_servicos_aviario_ID)
+    REFERENCES tb_servicos_aviario (ID));
+
+CREATE TABLE tb_estq_geralAnimais (
+  ID INT NOT NULL AUTO_INCREMENT,
+  tb_estq_carne_verm_ID INT NOT NULL,
+  tb_estq_leite_ID INT NOT NULL,
+  tb_estq_couro_ID INT NOT NULL,
+  tb_estq_carne_branca_ID INT NOT NULL,
+  tb_estq_aviario_ID INT NOT NULL,
+  tb_servicos_lago_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+FOREIGN KEY (tb_estq_carne_verm_ID)
+    REFERENCES tb_estq_carne_verm (ID),
+FOREIGN KEY (tb_estq_leite_ID)
+    REFERENCES tb_estq_leite (ID),
+FOREIGN KEY (tb_estq_couro_ID)
+    REFERENCES tb_estq_couro (ID),
+FOREIGN KEY (tb_estq_carne_branca_ID)
+    REFERENCES tb_estq_carne_branca (ID),
+FOREIGN KEY (tb_estq_aviario_ID)
+    REFERENCES tb_estq_aviario (ID),
+FOREIGN KEY (tb_servicos_lago_ID)
+    REFERENCES tb_servicos_lago (ID));
+
+CREATE TABLE tb_estq_frut (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_laranja INT NOT NULL,
+  cd_morango INT NOT NULL,
+  cd_maca INT NOT NULL,
+  cd_adubo INT NOT NULL,
+  dt_verificacao_estq DATE NOT NULL,
+  tb_servicos_colheita_fruti_ID INT NOT NULL,
+  tb_servicos_plantacao_fruti_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+    FOREIGN KEY (tb_servicos_colheita_fruti_ID)
+    REFERENCES tb_servicos_colheita_fruti (ID),
+    FOREIGN KEY (tb_servicos_plantacao_fruti_ID)
+    REFERENCES tb_servicos_plantacao_fruti (ID));
+
+CREATE TABLE tb_servicos_plantacao_hort (
+  ID INT NOT NULL AUTO_INCREMENT,
+  dt_lipeza_solo DATE NOT NULL,
+  dt_plantio DATE NOT NULL,
+  dt_hirrigacao DATE NOT NULL,
+  cd_adubo INT NOT NULL,
+  tb_hortalicas_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+    FOREIGN KEY (tb_hortalicas_ID)
+    REFERENCES tb_hortalicas (ID));
+
+CREATE TABLE tb_estq_hort (
+  ID INT NOT NULL AUTO_INCREMENT,
+  cd_adubo INT NOT NULL,
+  cd_semente INT NOT NULL,
+  cd_produto INT NOT NULL,
+  cd_pesticida INT NOT NULL,
+  dt_verificacao_estq DATE NOT NULL,
+  tb_servicos_plantacao_hort_ID INT NOT NULL,
+  tb_servicos_colheita_hort_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+    FOREIGN KEY (tb_servicos_plantacao_hort_ID)
+    REFERENCES tb_servicos_plantacao_hort (ID),
+    FOREIGN KEY (tb_servicos_colheita_hort_ID)
+    REFERENCES tb_servicos_colheita_hort (ID));
+
+CREATE TABLE tb_estq_geralPlantio (
+  ID INT NOT NULL AUTO_INCREMENT,
+  tb_estq_frut_ID INT NOT NULL,
+  tb_estq_hort_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+    FOREIGN KEY (tb_estq_frut_ID)
+    REFERENCES tb_estq_frut (ID),
+    FOREIGN KEY (tb_estq_hort_ID)
+    REFERENCES tb_estq_hort (ID));
+
+CREATE TABLE tb_estq_geral (
+  ID INT NOT NULL AUTO_INCREMENT,
+  tb_estq_geralPlantio_ID INT NOT NULL,
+  tb_estq_geralAnimais_ID INT NOT NULL,
+  PRIMARY KEY (ID),
+    FOREIGN KEY (tb_estq_geralPlantio_ID)
+    REFERENCES tb_estq_geralPlantio (ID),
+    FOREIGN KEY (tb_estq_geralAnimais_ID)
+    REFERENCES tb_estq_geralAnimais (ID))
