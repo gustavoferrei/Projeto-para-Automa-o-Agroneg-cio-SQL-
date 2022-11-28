@@ -1,0 +1,40 @@
+select*from tb_celeiro;
+select*from tb_cercado;
+select*from tb_estq_frut;
+select*from tb_estq_aviario;
+-------------------------------------------------------------------------
+update tb_cercado set dt_verificacao_cercado = '2022-10-14' where id=1;
+update tb_celeiro set dt_verificacao_celeiro = '2022-09-15' where id=1;
+update tb_avicultura set dt_manutencao_aviario = '2022-01-20' where id=1;
+update tb_estq_frut set dt_verificacao_estq = '2022-12-01' where id=1;
+--------------------------------------------------------------------------
+SELECT COUNT (cd_colheita_ovos) FROM tb_servicos_aviario;
+SELECT AVG (cd_peixes) FROM tb_servicos_lago;
+SELECT SUM (cd_produto) FROM tb_servicos_colheita_fruti;
+---------------------------------------------------------
+CREATE TRIGGER servicos_aviario
+AFTER INSERT  ON tb_servicos_aviario
+FOR EACH ROW
+    INSERT INTO tb_estq_aviario (cd_ovos) VALUES ('1');
+    
+CREATE TRIGGER vaca
+AFTER INSERT  ON tb_celeiro
+FOR EACH ROW
+    INSERT INTO tb_estq_carne_verm (cd_vaca) VALUES ('1');
+    
+CREATE TRIGGER tb_servicos_lago
+AFTER INSERT  ON tb_servicos_lago
+FOR EACH ROW
+    INSERT INTO tb_estq_carne_branca (cd_peixe) VALUES ('1');
+    
+    CREATE TRIGGER servicos_colheita_hort
+AFTER INSERT  ON tb_servicos_colheita_hort
+FOR EACH ROW
+    INSERT INTO tb_estq_hort (cd_produto) VALUES ('1');
+------------------------------------------------------------
+select id,cd_vaca,
+
+(select cd_abatedouro from tb_servicos_animais 
+where id=tb_celeiro_ID limit 1) cd_nome
+
+from tb_celeiro;
